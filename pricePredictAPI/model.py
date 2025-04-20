@@ -6,10 +6,7 @@ import numpy as np
 #     model = pickle.load(f)
 
 def predict_price(data: dict) -> float:
-    # Sample feature encoding (adjust based on your model's training pipeline)
-    fuel_type = 1 if data["fuel_type"] == "Petrol" else 0
-    seller_type = 1 if data["seller_type"] == "Individual" else 0
-    transmission = 1 if data["transmission"] == "Manual" else 0
+   
 
     # Example features order
     input_features = np.array([[data["year"], data["present_price"],
