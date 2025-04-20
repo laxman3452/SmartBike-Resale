@@ -1,12 +1,3 @@
-<!-- Navigate to this folder and then run these commands,
-
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn main:app --reload -->
-
-
-# FastAPI Project
 
 ## Prerequisites
 
@@ -15,10 +6,22 @@ uvicorn main:app --reload -->
 
 ## Setup
 
-1. **Clone the repository**:
+***Navigate to this folder and then run these commands,***
 
-   Open your terminal and run:
 
+1. **Create a virtual environment**:
+    ```bash
+    python -m venv venv
+2. ***Activate the virtual environment***:
    ```bash
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   venv\Scripts\activate
+3. ***Install dependencies***:
+   ```bash
+   pip install -r requirements.txt
+4. ***Run the FastAPI server***:
+   ```bash
+   uvicorn main:app --reload 
+   
+   
+   
+    
