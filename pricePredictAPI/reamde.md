@@ -21,6 +21,20 @@
 4. ***Run the FastAPI server***:
    ```bash
    uvicorn main:app --reload 
+5. ***POST Request***
+   ```bash
+    /predict
+    {
+        "year": 2018,
+        "present_price": 3.5,
+        "kms_driven": 40000,
+        "owner": 0,
+        "fuel_type": "Petrol",
+        "seller_type": "Individual",
+        "transmission": "Manual"
+     }
+
+
    
    
    
