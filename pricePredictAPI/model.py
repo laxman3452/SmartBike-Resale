@@ -11,6 +11,6 @@ def predict_price(data: dict) -> float:
     # Example features order
     input_features = np.array([[data["year"], data["present_price"],
                                 data["kms_driven"], data["owner"],
-                                fuel_type, seller_type, transmission]])
+                                ]])
     prediction = model.predict(input_features)
     return round(prediction[0], 2)
