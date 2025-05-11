@@ -25,14 +25,17 @@
    ```bash
     /predict
     {
-        "year": 2018,
-        "present_price": 3.5,
-        "kms_driven": 40000,
-        "owner": 0,
-        "fuel_type": "Petrol",
-        "seller_type": "Individual",
-        "transmission": "Manual"
-     }
+      "brand": "Honda",
+      "bike_name": "CB Shine",
+      "year_of_purchase": 2018,
+      "cc": 125,
+      "kms_driven": 23000,
+      "owner": "First",
+      "servicing": "Regular",
+      "engine_condition": "Good",
+      "physical_condition": "Good",
+      "tyre_condition": "Average"
+    }
 
 
    
