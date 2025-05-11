@@ -1,10 +1,13 @@
 from pydantic import BaseModel
 
-class BikeFeatures(BaseModel):
-    year: int
-    present_price: float
+class BikeDetails(BaseModel):
+    brand: str
+    bike_name: str
+    year_of_purchase: int
+    cc: int
     kms_driven: int
-    owner: int
-    fuel_type: str
-    seller_type: str
-    transmission: str
+    owner: str
+    servicing: str
+    engine_condition: str
+    physical_condition: str
+    tyre_condition: str
