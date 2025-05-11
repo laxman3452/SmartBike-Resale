@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from schemas import BikeFeatures
+from schemas import BikeDetails
 from model import predict_price
 
 app = FastAPI()
