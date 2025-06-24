@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Using next/router for pages directory
+import { useRouter } from 'next/navigation';
 import BrandInput from '@/components/BrandInput';
 import BikeNameInput from '@/components/BikeNameImput';
 
@@ -174,6 +175,7 @@ const PricePrediction = () => {
         if (typeof window !== 'undefined') {
           localStorage.setItem('bikeDetails', JSON.stringify(bikeDetailsToStore));
           setPredictedPrice(parseInt(data.predictedPrice));
+          router.push("/price-prediction");
         }
 
         console.log("Price predicted and stored:", data.predicted_price);
