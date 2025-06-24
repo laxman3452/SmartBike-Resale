@@ -12,17 +12,17 @@ const PricePrediction = () => {
 
   // State to store form input values for bike details
   const [formData, setFormData] = useState({
-    brand: '',
-    bike_name: '',
-    year_of_purchase: '',
-    cc: '',
-    kms_driven: '',
-    owner: 'First', // Default value for owner
-    servicing: 'up to date', // Default value for servicing
-    engine_condition: 'Excellent', // Default value for engine condition
-    physical_condition: 'Good', // Default value for physical condition
-    tyre_condition: 'Fair', // Default value for tyre condition
-    description: '', // New description field
+        brand:'',
+        bike_name:'',
+        year_of_purchase:'',
+        cc:'',
+        kms_driven:'',
+        owner:'',
+        servicing:'',
+        engine_condition:'',
+        physical_condition:'',
+        tyre_condition:'',
+        description: '', 
   });
 
   // State to store the randomly predicted price, now editable by user
@@ -133,19 +133,59 @@ const PricePrediction = () => {
 
   // Handles the "Predict Price" button click
   const handlePredictPrice = () => {
-    // Generate a random price between 100,000 and 500,000
-    const randomPrice = Math.floor(Math.random() * (500000 - 100000 + 1)) + 100000;
-    setPredictedPrice(randomPrice); // Set the predicted price to the editable input
-    setShowPredictionActions(true); // Show the action buttons
-    setMessage(''); // Clear any previous messages
+  if(!predictedPrice){
+    const year = parseInt(formData.year_of_purchase);
+  const cc = parseInt(formData.cc);
+  const kms = parseInt(formData.kms_driven);
 
-    // Store the current form data and predicted price in localStorage
-    // Note: File objects cannot be directly stored in localStorage, so we only store other form data.
-    const bikeDetailsToStore = { ...formData, price: randomPrice };
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('bikeDetails', JSON.stringify(bikeDetailsToStore));
-    }
+  if (isNaN(year) || isNaN(cc) || isNaN(kms)) {
+    console.error("Please fill out all numeric fields correctly.");
+    return;
+  }
+
+  const bikeData = {
+    brand: formData.brand,
+    bike_name: formData.bike_name,
+    year_of_purchase: year,
+    cc: cc,
+    kms_driven: kms,
+    owner: formData.owner,
+    servicing: formData.servicing,
+    engine_condition: formData.engine_condition,
+    physical_condition: formData.physical_condition,
+    tyre_condition: formData.tyre_condition
   };
+
+  fetch('http://127.0.0.1:8000/predict', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bikeData)
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.predicted_price) {
+        const bikeDetailsToStore = {
+          ...formData,
+          price: data.predicted_price
+        };
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('bikeDetails', JSON.stringify(bikeDetailsToStore));
+          setPredictedPrice(parseInt(data.predictedPrice));
+        }
+
+        console.log("Price predicted and stored:", data.predicted_price);
+      } else {
+        console.error("Prediction Error:", data);
+      }
+    })
+    .catch(error => {
+      console.error("Fetch Error:", error);
+    });
+  }
+};
 
   // Handles the "List the bike in marketplace" action
   const handleListBike = async () => {
@@ -361,7 +401,7 @@ const PricePrediction = () => {
               name="year_of_purchase"
               value={formData.year_of_purchase}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
               placeholder="e.g., 2020"
             />
           </div>
@@ -375,7 +415,7 @@ const PricePrediction = () => {
               name="cc"
               value={formData.cc}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
               placeholder="e.g., 250"
             />
           </div>
@@ -389,7 +429,7 @@ const PricePrediction = () => {
               name="kms_driven"
               value={formData.kms_driven}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
               placeholder="e.g., 18000"
             />
           </div>
@@ -402,7 +442,7 @@ const PricePrediction = () => {
               name="owner"
               value={formData.owner}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500 "
             >
               <option value="First Owner">First Owner</option>
               <option value="Second Owner">Second Owner</option>
@@ -484,7 +524,7 @@ const PricePrediction = () => {
               rows="3"
               value={formData.description}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
               placeholder="e.g., Well-maintained bike with regular servicing. Minor scratches on the side."
             ></textarea>
           </div>
