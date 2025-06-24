@@ -1,7 +1,6 @@
 "use client"; // This directive marks the component for client-side rendering in Next.js
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Using next/router for pages directory
 import { useRouter } from 'next/navigation';
 import BrandInput from '@/components/BrandInput';
 import BikeNameInput from '@/components/BikeNameImput';
