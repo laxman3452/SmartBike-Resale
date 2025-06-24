@@ -173,10 +173,13 @@ const PricePrediction = () => {
         };
 
         if (typeof window !== 'undefined') {
-          setPredictedPrice(parseInt(data.predictedPrice));
+
 
           localStorage.setItem('bikeDetails', JSON.stringify(bikeDetailsToStore));
-          // router.push("/price-prediction");
+          setPredictedPrice(parseInt(data.predicted_price));
+          setShowPredictionActions(true);
+          
+
         }
 
         console.log("Price predicted and stored:", data.predicted_price);
@@ -243,7 +246,6 @@ const PricePrediction = () => {
         price: predictedPrice,
       };
       localStorage.setItem('bikeDetails', JSON.stringify(bikeDataForStorage));
-      router.push('/login'); // Redirect to login page
       return;
     }
 
@@ -556,7 +558,7 @@ const PricePrediction = () => {
             <div className="mt-2 flex justify-center items-center">
               <span className="text-4xl font-extrabold text-indigo-600 mr-2">NPR</span>
               <input
-                type="number"
+                type="Number"
                 value={predictedPrice}
                 onChange={handlePredictedPriceChange}
                 disabled={loading} // Disable editing while loading
