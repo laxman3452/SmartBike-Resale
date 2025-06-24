@@ -5,7 +5,9 @@ const jwt = require('jsonwebtoken');
 
 // const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
 const generateToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
-const generateOtp = require('../utils/generateotp'); 
+function generateOtp() {
+  return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+};
 
 exports.register = async (req, res) => {
   try {

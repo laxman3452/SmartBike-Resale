@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const {uploadAvatar} = require('../middlewares/upload');
 
 
-const { getUserProfile, changePassword, uploadAvatarImage } = require('../controllers/userController');
+const { getUserProfile, changePassword, uploadAvatarImage } = require('../controllers/usercontroller');
 
 router.get('/profile', authMiddleware, getUserProfile);
 router.post('/change-password', authMiddleware, changePassword);
