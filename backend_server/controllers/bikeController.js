@@ -3,9 +3,9 @@ const User = require('../models/User');
 
 exports.listBike = async (req, res) => {
   try {
-    console.log("🚀 JWT User ID:", req.userId);
-    console.log("📦 req.body:", req.body);
-    console.log("📸 req.files:", req.files);
+    // console.log("🚀 JWT User ID:", req.userId);
+    // console.log("📦 req.body:", req.body);
+    // console.log("📸 req.files:", req.files);
 
     const billBookImages = req.files['billBookImage']?.map(file => file.path);
     const bikeImages = req.files['bikeImage']?.map(file => file.path);
@@ -36,11 +36,11 @@ exports.listBike = async (req, res) => {
       listedBy: req.userId
     });
 
-    console.log("✅ Bike Object Ready:", bike);
+    // console.log("✅ Bike Object Ready:", bike);
 
     await bike.save(); // This might be throwing!
 
-    console.log("✅ Bike saved.");
+    // console.log("✅ Bike saved.");
 
     res.status(201).json({ message: 'Bike listed successfully', bike });
 

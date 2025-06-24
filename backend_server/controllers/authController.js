@@ -125,7 +125,7 @@ exports.forgotPassword = async (req, res) => {
     user.otp = otp;
     await user.save();
 
-    console.log("Sending OTP to:", email);
+    // console.log("Sending OTP to:", email);
 
     await sendEmail(
       email, // ✅ Make sure this is a string

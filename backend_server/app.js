@@ -33,7 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   res.status(200).json({message:'This is the index.'});
 //   next();
 // });
-
+app.get('/', (req, res) => {
+  res.send('Welcome to smartBike-Resale API');
+});
 app.use('/api/v1', require('./routes/authRoutes'));
 app.use('/api/v1/bike', require('./routes/bikeRoutes'));
 app.use('/api/v1/user', require('./routes/userRoutes'));

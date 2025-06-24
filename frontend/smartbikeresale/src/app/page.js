@@ -166,6 +166,7 @@ export default function Page() {
           delete payload[key];
         }
       });
+      // console.log(payload);
 
       requestOptions = {
         method: 'POST',

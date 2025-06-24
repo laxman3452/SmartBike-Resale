@@ -49,7 +49,7 @@ export default function BrandInput({ bikeData, setBikeData }) {
         onBlur={() => setShowSuggestions(false)} // 🔁 No setTimeout
         className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-700"
         placeholder="Enter or select a brand"
-        required
+        // required
       />
 
       {showSuggestions && suggestions.length > 0 && (

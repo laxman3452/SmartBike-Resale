@@ -45,7 +45,7 @@ export default function BikeNameInput({ bikeData, setBikeData }) {
         onBlur={() => setShowSuggestions(false)} // No delay
         className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-700"
         placeholder="Enter or select a bike name"
-        required
+        // required
       />
 
       {showSuggestions && suggestions.length > 0 && (
