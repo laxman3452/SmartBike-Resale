@@ -156,7 +156,7 @@ const PricePrediction = () => {
     tyre_condition: formData.tyre_condition
   };
 
-  fetch('http://127.0.0.1:8000/predict', {
+  fetch('https://smartbike-resale-fastapi.onrender.com/predict', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
