@@ -401,7 +401,7 @@ const PricePrediction = () => {
               name="year_of_purchase"
               value={formData.year_of_purchase}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-200 text-gray-500"
               placeholder="e.g., 2020"
             />
           </div>
@@ -415,7 +415,7 @@ const PricePrediction = () => {
               name="cc"
               value={formData.cc}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-200 text-gray-500"
               placeholder="e.g., 250"
             />
           </div>
@@ -429,7 +429,7 @@ const PricePrediction = () => {
               name="kms_driven"
               value={formData.kms_driven}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-500 text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out placeholder:text-gray-200 text-gray-500"
               placeholder="e.g., 18000"
             />
           </div>
@@ -444,6 +444,8 @@ const PricePrediction = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500 "
             >
+              <option value="">Select Owner Type</option>
+             
               <option value="First Owner">First Owner</option>
               <option value="Second Owner">Second Owner</option>
               <option value="Third Owner">Third Owner</option>
@@ -461,6 +463,8 @@ const PricePrediction = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
             >
+              <option value="">select</option>
+
               <option value="regular">regular</option>
               <option value="irregular">irregular</option>
             </select>
@@ -476,7 +480,7 @@ const PricePrediction = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
             >
-              <option value="Excellent">Excellent</option>
+              <option value="">select</option>
               <option value="open">open</option>
               <option value="seal">seal</option>
             </select>
@@ -492,6 +496,8 @@ const PricePrediction = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
             >
+              <option value="">Select Condition</option>
+
               <option value="fresh">fresh</option>
               <option value="like new">like new</option>
               <option value="old">old</option>
@@ -509,6 +515,8 @@ const PricePrediction = () => {
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
             >
+              <option value="">Select Condition</option>
+
               <option value="good">good</option>
               <option value="new">new</option>
               <option value="worn">worn</option>
