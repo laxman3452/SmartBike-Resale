@@ -134,6 +134,7 @@ const PricePrediction = () => {
   // Handles the "Predict Price" button click
   const handlePredictPrice = () => {
   if(!predictedPrice){
+    console.log("inside");
     const year = parseInt(formData.year_of_purchase);
   const cc = parseInt(formData.cc);
   const kms = parseInt(formData.kms_driven);
@@ -172,9 +173,10 @@ const PricePrediction = () => {
         };
 
         if (typeof window !== 'undefined') {
-          localStorage.setItem('bikeDetails', JSON.stringify(bikeDetailsToStore));
           setPredictedPrice(parseInt(data.predictedPrice));
-          router.push("/price-prediction");
+
+          localStorage.setItem('bikeDetails', JSON.stringify(bikeDetailsToStore));
+          // router.push("/price-prediction");
         }
 
         console.log("Price predicted and stored:", data.predicted_price);
