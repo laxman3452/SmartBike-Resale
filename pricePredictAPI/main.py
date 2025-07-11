@@ -40,7 +40,7 @@ FEATURE_ORDER = [
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello from FastAPI"}
+    return {"message": "Hello from smartBike Resale FastAPI server."}
 
 @app.post("/predict")
 def predict_price(data: PredictRequest):
