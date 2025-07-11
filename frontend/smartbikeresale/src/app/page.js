@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
  import BikeNameInput from '@/components/BikeNameImput';
 
 
+
+
 export default function Page() {
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
@@ -206,6 +208,7 @@ export default function Page() {
       setIsLoadingFilters(false);
     }
   };
+
 
   // Handler for filter form input changes
   const handleFilterChange = (e) => {
@@ -424,12 +427,12 @@ export default function Page() {
                 name="owner"
                 value={filters.owner}
                 onChange={handleFilterChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 placeholder-gray-400 text-gray-500"
               >
-                <option value="First Owner">First Owner</option>
-                <option value="Second Owner">Second Owner</option>
-                <option value="Third Owner">Third Owner</option>
-                <option value="Fourth Owner Or More">Fourth Owner Or More</option>
+                <option value="First Owner"  >First Owner</option>
+                <option value="Second Owner" >Second Owner</option>
+                <option value="Third Owner" >Third Owner</option>
+                <option value="Fourth Owner Or More" >Fourth Owner Or More</option>
               </select>
             </div>
 

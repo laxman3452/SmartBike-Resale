@@ -486,47 +486,56 @@ const PricePrediction = () => {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
             >
               <option value="">select</option>
-              <option value="open">open</option>
+              <option value="open">opened</option>
               <option value="seal">seal</option>
             </select>
           </div>
 
           {/* Physical Condition */}
-          <div>
-            <label htmlFor="physical_condition" className="block text-sm font-medium text-gray-700">Physical Condition</label>
-            <select
-              id="physical_condition"
-              name="physical_condition"
-              value={formData.physical_condition}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
-            >
-              <option value="">Select Condition</option>
+<div>
+  <label htmlFor="physical_condition" className="block text-sm font-medium text-gray-700">
+    Physical Condition
+    <span className="block text-xs font-normal text-gray-500">
+      Choose based on body scratches, appearance, and overall condition.
+    </span>
+  </label>
+  <select
+    id="physical_condition"
+    name="physical_condition"
+    value={formData.physical_condition}
+    onChange={handleChange}
+    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
+  >
+    <option value="">Select Condition</option>
+    <option value="fresh">Fresh – Looks almost unused, no visible damage</option>
+    <option value="like new">Like New – Minimal use, very minor signs of wear</option>
+    <option value="old">Old – Noticeable wear, minor scratches or faded paint</option>
+    <option value="very old">Very Old – Heavy usage signs, visible damage or rust</option>
+  </select>
+</div>
 
-              <option value="fresh">fresh</option>
-              <option value="like new">like new</option>
-              <option value="old">old</option>
-              <option value="very old">very old</option>
-            </select>
-          </div>
+{/* Tyre Condition */}
+<div>
+  <label htmlFor="tyre_condition" className="block text-sm font-medium text-gray-700">
+    Tyre Condition
+    <span className="block text-xs font-normal text-gray-500">
+      Choose based on tread depth and usage.
+    </span>
+  </label>
+  <select
+    id="tyre_condition"
+    name="tyre_condition"
+    value={formData.tyre_condition}
+    onChange={handleChange}
+    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
+  >
+    <option value="">Select Condition</option>
+    <option value="new">New – Recently replaced, full tread, no signs of wear</option>
+    <option value="good">Good – Moderate usage, safe tread depth remaining</option>
+    <option value="worn">Worn – Low tread, cracks or signs of replacement needed</option>
+  </select>
+</div>
 
-          {/* Tyre Condition */}
-          <div>
-            <label htmlFor="tyre_condition" className="block text-sm font-medium text-gray-700">Tyre Condition</label>
-            <select
-              id="tyre_condition"
-              name="tyre_condition"
-              value={formData.tyre_condition}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150 ease-in-out text-gray-500"
-            >
-              <option value="">Select Condition</option>
-
-              <option value="good">good</option>
-              <option value="new">new</option>
-              <option value="worn">worn</option>
-            </select>
-          </div>
 
           {/* Description */}
           <div className="md:col-span-2"> {/* Span across two columns */}
