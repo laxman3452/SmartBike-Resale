@@ -173,23 +173,23 @@ export default function Page() {
       <header className="bg-white shadow-md p-4 flex justify-between items-center px-6">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/" className="text-2xl font-bold text-gray-800 tracking-tight">
+          <a href="/" className="text-sm md:text-2xl font-bold text-gray-800 tracking-tight ml-[-1rem]">
             smartBike-Resale
           </a>
         </div>
 
-        {/* Right-hand side: My Listings and Profile navigation */}
-        <nav className="flex items-center space-x-6">
-
-          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
-            price prediction
+        {/* Right-hand side: My Listings and Profile */}
+        <nav className="flex items-center space-x-2 md:space-x-6 w-[185px] md:w-auto mr-[-1rem]">
+          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 w-full text-[10px] md:text-xl">
+            predict & list
           </a>
 
-          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
+
+          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 text-sm w-full text-[10px] md:text-xl">
             My Listings
           </a>
 
-          {/* Profile Circle Div with Avatar/Initials */}
+          {/* Profile Circle Div */}
           <a href="/profile" className="block relative">
             <div className="w-10 h-10 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 font-bold text-lg overflow-hidden border-2 border-purple-400 shadow-sm">
               {avatarSrc ? (
@@ -199,13 +199,11 @@ export default function Page() {
                   alt="User Avatar"
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    // Fallback to initials if avatar image fails to load
                     e.target.onerror = null;
                     e.target.src = `https://placehold.co/40x40/a78bfa/ffffff?text=${userInitials}`;
                   }}
                 />
               ) : (
-                // Display initials if no avatar source is available
                 <span className="text-purple-800">{userInitials}</span>
               )}
             </div>

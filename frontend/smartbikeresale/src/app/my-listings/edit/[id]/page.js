@@ -70,7 +70,7 @@ export default function Page() {
 
   // Mock avatar data for header (replace with actual user context in a real app)
   const avatarSrc = null; // Replace with actual avatar URL if available
-  const userInitials = 'JD'; // Replace with actual user initials (e.g., from user's name)
+  const userInitials = 'p'; // Replace with actual user initials (e.g., from user's name)
 
   const showUserMessage = (message) => {
     setModalMessage(message);
@@ -314,20 +314,19 @@ export default function Page() {
       <header className="bg-white shadow-md p-4 flex justify-between items-center px-6">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/" className="text-2xl font-bold text-gray-800 tracking-tight">
+          <a href="/" className="text-sm md:text-2xl font-bold text-gray-800 tracking-tight ml-[-1rem]">
             smartBike-Resale
           </a>
         </div>
 
         {/* Right-hand side: My Listings and Profile */}
-        <nav className="flex items-center space-x-6">
-
-          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
-            price prediction
+        <nav className="flex items-center space-x-2 md:space-x-6 w-[185px] md:w-auto mr-[-1rem]">
+          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 w-full text-[10px] md:text-xl">
+            predict & list
           </a>
 
 
-          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
+          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 text-sm w-full text-[10px] md:text-xl">
             My Listings
           </a>
 
@@ -339,7 +338,7 @@ export default function Page() {
                 <img
                   src={avatarSrc}
                   alt="User Avatar"
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = `https://placehold.co/40x40/a78bfa/ffffff?text=${userInitials}`;

@@ -206,20 +206,20 @@ export default function Page() {
       <header className="w-full bg-white shadow-md p-4 flex justify-between items-center px-6 md:px-12 rounded-b-lg">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/" className="text-2xl font-bold text-gray-800 tracking-tight hover:text-orange-600 transition-colors duration-200">
+          <a href="/" className="text-sm md:text-2xl font-bold text-gray-800 tracking-tight hover:text-orange-600 transition-colors duration-200 ml-[-1rem]">
             smartBike-Resale
           </a>
         </div>
 
         {/* Right-hand side: My Listings, Profile, and Logout */}
-        <nav className="flex items-center space-x-4 md:space-x-6">
+        <nav className="flex items-center space-x-2 md:space-x-6 w-[185px] mr-[2rem]">
 
-          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
-            price prediction
+          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 text-[10px] md:text-xl">
+            predict & list
           </a>
 
 
-          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 py-2 px-3 rounded-md">
+          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 py-2 px-3 rounded-md text-[10px] md:text-xl">
             My Listings
           </a>
 

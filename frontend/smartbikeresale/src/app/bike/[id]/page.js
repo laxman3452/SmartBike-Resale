@@ -235,22 +235,22 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans text-gray-800">
-      <header className="bg-white shadow-md p-4 flex justify-between items-center px-6 sticky top-0 z-10">
+      <header className="bg-white shadow-md p-4 flex justify-between items-center px-6">
         {/* Logo */}
         <div className="flex items-center">
-          <a href="/" className="text-2xl font-bold text-gray-800 tracking-tight">
+          <a href="/" className="text-sm md:text-2xl font-bold text-gray-800 tracking-tight ml-[-1rem]">
             smartBike-Resale
           </a>
         </div>
 
         {/* Right-hand side: My Listings and Profile */}
-        <nav className="flex items-center space-x-6">
-
-          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
-            price prediction
+        <nav className="flex items-center space-x-2 md:space-x-6 w-[185px] md:w-auto mr-[-1rem]">
+          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 w-full text-[10px] md:text-xl">
+            predict & list
           </a>
 
-          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200">
+
+          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 text-sm w-full text-[10px] md:text-xl">
             My Listings
           </a>
 
