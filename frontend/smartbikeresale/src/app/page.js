@@ -575,7 +575,7 @@ export default function Page() {
                         <img
                           src={bike.bikeImage && bike.bikeImage.length > 0 ? bike.bikeImage[0] : `https://placehold.co/400x200/cccccc/333333?text=No+Image`}
                           alt={`${bike.brand} ${bike.bike_name}`}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = `https://placehold.co/400x200/cccccc/333333?text=No+Image`;

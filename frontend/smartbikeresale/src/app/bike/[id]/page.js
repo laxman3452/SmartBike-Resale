@@ -287,7 +287,7 @@ export default function Page() {
               <img
                 src={bikeDetails.bikeImage[0]}
                 alt={`${bikeDetails.brand} ${bikeDetails.bike_name}`}
-                className="w-full h-96 object-cover rounded-lg shadow-md border border-gray-200"
+                className="w-full h-96 object-contain rounded-lg shadow-md border border-gray-200"
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image';
