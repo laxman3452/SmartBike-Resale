@@ -260,7 +260,7 @@ const PricePrediction = () => {
       setLoading(true); // Set loading to true when starting the API call
       setMessage('Processing... Listing your bike.'); // Show processing message
       try {
-        const response = await fetch('http://localhost:3000/api/v1/bike/list-bike', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/bike/list-bike`, {
           method: 'POST',
           // When sending FormData, DO NOT set 'Content-Type' header.
           // The browser will automatically set it to 'multipart/form-data'
