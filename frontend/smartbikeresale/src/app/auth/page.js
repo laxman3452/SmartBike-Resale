@@ -86,11 +86,19 @@ export default function AuthPage() {
 
             if (response.ok && response.status === 201) {
                 // If registration is successful (status 201)
-                const newUserId = data.user._id;
+                const newUserId = data.userId;
                 localStorage.setItem('userId', newUserId); // Store userId in localStorage
                 setUserId(newUserId);
                 setCurrentForm('otp'); // Switch to OTP verification form
-            } else if (response.status === 400 && data.message === 'Email already registered and verified') {
+            }
+            else if (response.ok && response.status === 200) {
+                // If registration is successful but user is not verified then(status 200)
+                const newUserId = data.userId;
+                localStorage.setItem('userId', newUserId); // Store userId in localStorage
+                setUserId(newUserId);
+                setCurrentForm('otp'); // Switch to OTP verification form
+            }
+            else if (response.status === 400 && data.message === 'Email already registered and verified') {
                 // Specific case: Email already registered and verified
                 setCurrentForm('login'); // Switch to login form
             } else {
