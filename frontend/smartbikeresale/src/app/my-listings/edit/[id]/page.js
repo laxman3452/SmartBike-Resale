@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 
 import BrandInput from '@/components/BrandInput';
 
-import BikeNameInput from '@/components/BikeNameImput';
+import BikeNameInput from '@/components/BikeNameInput';
 
 // A simple Modal component for user feedback (instead of alert/confirm)
 const Modal = ({ message, onClose }) => {

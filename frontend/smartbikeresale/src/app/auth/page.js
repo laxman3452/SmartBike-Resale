@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// import { useRouter } from 'next/navigation'; // Removed due to compilation error
 
 export default function AuthPage() {
 
     // State to manage which form is currently displayed: 'register', 'otp', 'login',
-    const [currentForm, setCurrentForm] = useState('register');
+    const [currentForm, setCurrentForm] = useState('login');
     // State to hold form data for registration
     const [registerFormData, setRegisterFormData] = useState({
         fullName: '',
@@ -168,14 +167,18 @@ export default function AuthPage() {
             });
 
             const data = await response.json();
-            setMessage(data.message); // Display message from API
-
             if (response.ok && response.status === 200) {
                 // If login is successful
                 localStorage.setItem('accessToken', data.accessToken);
-                localStorage.setItem('userId', data.user._id);
-                localStorage.setItem('userDetails', JSON.stringify(data.user)); // Store full user details
-                window.location.href = '/'; // Using direct window navigation to resolve compilation issue
+                // Storing the entire user object in localStorage
+                localStorage.setItem('userDetails', JSON.stringify(data.user));
+                localStorage.setItem('userId', data.user._id); // Storing userId separately for convenience
+
+                // Manually trigger an auth state change event to update the header
+                window.dispatchEvent(new CustomEvent('authChange'));
+
+                // Redirect to homepage immediately
+                window.location.href = '/';
             } else if (response.status === 401 && data.message === 'Account not verified. OTP sent to your email') {
                 // Specific case: Account not verified, needs OTP
                 const storedUserId = localStorage.getItem('userId');
@@ -266,260 +269,114 @@ export default function AuthPage() {
     };
 
     // --- Render Logic ---
+    const inputClasses = "w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200";
+    const buttonClasses = "w-full py-3 px-4 rounded-lg text-white font-bold transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed";
+    const messageClasses = "text-center font-medium mb-4 p-3 rounded-lg";
 
-    // Common styling for form containers
-    const formContainerClasses = "bg-white p-8 rounded-lg shadow-xl w-full max-w-md border border-gray-200";
-    // Common styling for input fields, now including placeholder color
-    const inputClasses = "w-full p-3 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent placeholder-gray-500 text-gray-500";
-    // Common styling for buttons
-    const buttonClasses = "w-full p-3 rounded-md text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed";
-    // Styling for success messages
-    const successMessageClasses = "text-green-700 font-medium mb-4";
-    // Styling for error/info messages
-    const errorMessageClasses = "text-red-600 font-medium mb-4";
+    const renderMessage = () => {
+        if (!message) return null;
+        const isSuccess = message.includes('successful') || message.includes('verified') || message.includes('sent');
+        return (
+            <p className={`${messageClasses} ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                {message}
+            </p>
+        );
+    };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 font-inter">
-            <div className={formContainerClasses}>
-                <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-                    smartBike-Resale
-                </h2>
-
-                {/* Display messages */}
-                {message && (
-                    <p className={
-                        message.includes('successful') || message.includes('verified') ?
-                        successMessageClasses : errorMessageClasses
-                    }>
-                        {message}
-                    </p>
-                )}
-
-                {/* Conditional rendering of forms */}
-                {currentForm === 'register' && (
-                    <>
-                        <h3 className="text-2xl font-semibold text-center mb-6 text-gray-700">Register</h3>
-                        <form onSubmit={handleRegisterSubmit}>
-                            <input
-                                type="text"
-                                name="fullName"
-                                placeholder="Full Name"
-                                value={registerFormData.fullName}
-                                onChange={handleRegisterChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={registerFormData.email}
-                                onChange={handleRegisterChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <input
-                                type="text"
-                                name="address"
-                                placeholder="Address"
-                                value={registerFormData.address}
-                                onChange={handleRegisterChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                value={registerFormData.password}
-                                onChange={handleRegisterChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className={`${buttonClasses} bg-green-600 hover:bg-green-700`}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'Registering...' : 'Register'}
-                            </button>
-                        </form>
-                        <p className="text-center text-sm text-gray-600 mt-4">
-                            Already have an account?{' '}
-                            <button
-                                onClick={() => { setCurrentForm('login'); setMessage(''); }}
-                                className="text-orange-500 hover:underline font-medium"
-                            >
-                                Login
-                            </button>
-                        </p>
-                    </>
-                )}
-
-                {currentForm === 'otp' && (
-                    <>
-                        <h3 className="text-2xl font-semibold text-center mb-6 text-gray-700">Verify OTP</h3>
-                        <p className="text-center text-gray-600 mb-4">
-                            An OTP has been sent to your email. Please enter it below.
-                        </p>
-                        <form onSubmit={handleVerifyOtp}>
-                            <input
-                                type="text"
-                                name="otp"
-                                placeholder="Enter OTP"
-                                value={otp}
-                                onChange={handleOtpChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className={`${buttonClasses} bg-orange-600 hover:bg-orange-700`}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'Verifying...' : 'Verify OTP'}
-                            </button>
-                        </form>
-                        <p className="text-center text-sm text-gray-600 mt-4">
-                            Go back to{' '}
-                            <button
-                                onClick={() => { setCurrentForm('login'); setMessage(''); }}
-                                className="text-green-500 hover:underline font-medium"
-                            >
-                                Login
-                            </button>
-                        </p>
-                    </>
-                )}
-
-                {currentForm === 'login' && (
-                    <>
-                        <h3 className="text-2xl font-semibold text-center mb-6 text-gray-700">Login</h3>
-                        <form onSubmit={handleLoginSubmit}>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={loginFormData.email}
-                                onChange={handleLoginChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                value={loginFormData.password}
-                                onChange={handleLoginChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className={`${buttonClasses} bg-purple-600 hover:bg-purple-700`}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'Logging In...' : 'Login'}
-                            </button>
-                        </form>
-                        <p className="text-center text-sm text-gray-600 mt-4">
-                            <button
-                                onClick={() => { setCurrentForm('forgotPasswordEmailEntry'); setMessage(''); setForgotPasswordEmail(''); }}
-                                className="text-purple-500 hover:underline font-medium mr-2"
-                            >
+    const renderForm = () => {
+        switch (currentForm) {
+            case 'register':
+                return (
+                    <form onSubmit={handleRegisterSubmit} className="space-y-4">
+                        <input type="text" name="fullName" placeholder="Full Name" value={registerFormData.fullName} onChange={handleRegisterChange} className={inputClasses} required />
+                        <input type="email" name="email" placeholder="Email Address" value={registerFormData.email} onChange={handleRegisterChange} className={inputClasses} required />
+                        <input type="text" name="address" placeholder="Address" value={registerFormData.address} onChange={handleRegisterChange} className={inputClasses} required />
+                        <input type="password" name="password" placeholder="Password" value={registerFormData.password} onChange={handleRegisterChange} className={inputClasses} required />
+                        <button type="submit" className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`} disabled={isLoading}>
+                            {isLoading ? 'Creating Account...' : 'Create Account'}
+                        </button>
+                    </form>
+                );
+            case 'login':
+                return (
+                    <form onSubmit={handleLoginSubmit} className="space-y-4">
+                        <input type="email" name="email" placeholder="Email Address" value={loginFormData.email} onChange={handleLoginChange} className={inputClasses} required />
+                        <input type="password" name="password" placeholder="Password" value={loginFormData.password} onChange={handleLoginChange} className={inputClasses} required />
+                        <button type="submit" className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`} disabled={isLoading}>
+                            {isLoading ? 'Logging In...' : 'Login'}
+                        </button>
+                        <p className="text-center text-sm text-gray-600">
+                            <button onClick={() => { setCurrentForm('forgotPassword'); setMessage(''); }} className="text-blue-600 hover:underline font-medium">
                                 Forgot Password?
                             </button>
-                            Don't have an account?{' '}
-                            <button
-                                onClick={() => { setCurrentForm('register'); setMessage(''); }}
-                                className="text-orange-500 hover:underline font-medium"
-                            >
-                                Register
-                            </button>
                         </p>
-                    </>
-                )}
+                    </form>
+                );
+            case 'otp':
+                return (
+                    <form onSubmit={handleVerifyOtp} className="space-y-4">
+                        <p className="text-center text-gray-600">An OTP has been sent to your email. Please enter it below.</p>
+                        <input type="text" name="otp" placeholder="Enter OTP" value={otp} onChange={handleOtpChange} className={inputClasses} required />
+                        <button type="submit" className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`} disabled={isLoading}>
+                            {isLoading ? 'Verifying...' : 'Verify OTP'}
+                        </button>
+                    </form>
+                );
+            case 'forgotPassword':
+                return (
+                    <form onSubmit={handleForgotPasswordRequest} className="space-y-4">
+                         <p className="text-center text-gray-600">Enter your email to receive a password reset OTP.</p>
+                        <input type="email" name="email" placeholder="Email Address" value={forgotPasswordEmail} onChange={(e) => setForgotPasswordEmail(e.target.value)} className={inputClasses} required />
+                        <button type="submit" className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`} disabled={isForgotPasswordLoading}>
+                            {isForgotPasswordLoading ? 'Sending...' : 'Send OTP'}
+                        </button>
+                    </form>
+                );
+            case 'forgotPasswordOtpEntry':
+                return (
+                    <form onSubmit={handleResetPassword} className="space-y-4">
+                        <p className="text-center text-gray-600">Enter the OTP from your email and your new password.</p>
+                        <input type="text" name="otp" placeholder="Enter OTP" value={forgotPasswordOtp} onChange={(e) => setForgotPasswordOtp(e.target.value)} className={inputClasses} required />
+                        <input type="password" name="newPassword" placeholder="New Password" value={newPassword} onChange={handleNewPasswordChange} className={inputClasses} required />
+                        <button type="submit" className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`} disabled={isForgotPasswordLoading}>
+                            {isForgotPasswordLoading ? 'Resetting...' : 'Reset Password'}
+                        </button>
+                    </form>
+                );
+            default:
+                return null;
+        }
+    };
 
-                {currentForm === 'forgotPasswordEmailEntry' && (
-                    <>
-                        <h3 className="text-2xl font-semibold text-center mb-6 text-gray-700">Forgot Password</h3>
-                        <p className="text-center text-gray-600 mb-4">
-                            Enter your email to receive an OTP for password reset.
-                        </p>
-                        <form onSubmit={handleForgotPasswordRequest}>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Enter your email"
-                                value={forgotPasswordEmail}
-                                onChange={(e) => setForgotPasswordEmail(e.target.value)}
-                                className={inputClasses}
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className={`${buttonClasses} bg-orange-600 hover:bg-orange-700`}
-                                disabled={isForgotPasswordLoading}
-                            >
-                                {isForgotPasswordLoading ? 'Sending OTP...' : 'Send OTP'}
-                            </button>
-                        </form>
-                        <p className="text-center text-sm text-gray-600 mt-4">
-                            Go back to{' '}
-                            <button
-                                onClick={() => { setCurrentForm('login'); setMessage(''); }}
-                                className="text-green-500 hover:underline font-medium"
-                            >
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+            <div className="w-full max-w-md">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+                    <div className="flex mb-6 border-b border-gray-200">
+                        <button
+                            onClick={() => { setCurrentForm('login'); setMessage(''); }}
+                            className={`flex-1 py-3 font-bold text-center transition-colors duration-300 ${currentForm === 'login' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}>
+                            Login
+                        </button>
+                        <button
+                            onClick={() => { setCurrentForm('register'); setMessage(''); }}
+                            className={`flex-1 py-3 font-bold text-center transition-colors duration-300 ${currentForm === 'register' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}>
+                            Register
+                        </button>
+                    </div>
+
+                    {renderMessage()}
+                    {renderForm()}
+
+                    {(currentForm === 'forgotPassword' || currentForm === 'forgotPasswordOtpEntry') && (
+                         <p className="text-center text-sm text-gray-600 mt-4">
+                            Remembered your password?{' '}
+                            <button onClick={() => { setCurrentForm('login'); setMessage(''); }} className="text-blue-600 hover:underline font-medium">
                                 Login
                             </button>
                         </p>
-                    </>
-                )}
-
-                {currentForm === 'forgotPasswordOtpEntry' && (
-                    <>
-                        <h3 className="text-2xl font-semibold text-center mb-6 text-gray-700">Reset Password</h3>
-                        <p className="text-center text-gray-600 mb-4">
-                            An OTP has been sent to your email. Enter it below with your new password.
-                        </p>
-                        <form onSubmit={handleResetPassword}>
-                            <input
-                                type="text"
-                                name="otp"
-                                placeholder="Enter OTP"
-                                value={forgotPasswordOtp}
-                                onChange={handleOtpChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <input
-                                type="password"
-                                name="newPassword"
-                                placeholder="Enter new password"
-                                value={newPassword}
-                                onChange={handleNewPasswordChange}
-                                className={inputClasses}
-                                required
-                            />
-                            <button
-                                type="submit"
-                                className={`${buttonClasses} bg-purple-600 hover:bg-purple-700`}
-                                disabled={isForgotPasswordLoading}
-                            >
-                                {isForgotPasswordLoading ? 'Resetting Password...' : 'Verify OTP & Reset Password'}
-                            </button>
-                        </form>
-                        <p className="text-center text-sm text-gray-600 mt-4">
-                            Go back to{' '}
-                            <button
-                                onClick={() => { setCurrentForm('login'); setMessage(''); }}
-                                className="text-green-500 hover:underline font-medium"
-                            >
-                                Login
-                            </button>
-                        </p>
-                    </>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );
