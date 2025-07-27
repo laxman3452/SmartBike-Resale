@@ -187,6 +187,7 @@ export default function AuthPage() {
                 }
                 setCurrentForm('otp'); // Switch to OTP verification form
             } else {
+                setMessage(data.message || 'Login failed. Please check your credentials.');
                 console.error('Login failed:', data);
             }
         } catch (error) {

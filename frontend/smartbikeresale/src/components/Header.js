@@ -41,21 +41,22 @@ const Header = () => {
           </Link>
         </div>
 
+
         {/* Navigation Links */}
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center space-x-6">
-          {isAuthenticated && (
-            <>
-              <Link href="/price-prediction" className="text-gray-600 hover:text-gray-900 font-medium">Predict & List</Link>
-              <Link href="/my-listings" className="text-gray-600 hover:text-gray-900 font-medium">My Listings</Link>
-            </>
-          )}
-        </nav>
+        {/* <nav className="hidden md:flex items-center space-x-8"> */}
+
+        {/* </nav> */}
 
         {/* Profile/Auth Icon */}
         <div className="flex items-center">
           {isAuthenticated ? (
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative gap-4 items-center flex" ref={dropdownRef}>
+
+
+              <Link href="/price-prediction" className="text-gray-600 hover:text-gray-900 font-medium">Predict & List</Link>
+              <Link href="/my-listings" className="text-gray-600 hover:text-gray-900 font-medium">My Listings</Link>
+
+
               <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center space-x-2 focus:outline-none">
                 {userDetails?.avatar ? (
                   <img

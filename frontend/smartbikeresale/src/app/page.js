@@ -2,12 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import BrandInput from '@/components/BrandInput';
 import { FaFilter, FaTimes } from 'react-icons/fa';
 import FilterSection from '@/components/FilterSection';
+import BikeNameInput from '@/components/BikeNameInput';
+
+
 
 
 export default function Page() {
   const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
+  const [userDetails, setUserDetails] = useState(null); // State to store user details
 
   // Filter form states
   const [filters, setFilters] = useState({
@@ -35,17 +41,55 @@ export default function Page() {
   const [isFilteredMode, setIsFilteredMode] = useState(false); // True if filters are active, false for general listings
   const [showFilters, setShowFilters] = useState(false); // State for filter visibility
 
-  // Effect to fetch initial bikes
+  // Auth check and initial data load
   useEffect(() => {
-    fetchBikes(1, false);
+    const timeout = setTimeout(() => {
+      const token = localStorage.getItem('accessToken');
+      const storedUserId = localStorage.getItem('userId');
+      const storedUserDetails = localStorage.getItem('userDetails');
+
+      if (storedUserDetails) {
+        try {
+          setUserDetails(JSON.parse(storedUserDetails));
+        } catch (e) {
+          console.error("Failed to parse user details from localStorage", e);
+          localStorage.removeItem('userDetails');
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('userId');
+          window.location.href = '/auth';
+          return;
+        }
+      }
+
+      if (!token || !storedUserId) {
+        window.location.href = '/auth';
+      } else {
+        setIsChecking(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeout);
   }, []);
+
+  // Effect to fetch initial bikes or when isChecking becomes false
+  useEffect(() => {
+    if (!isChecking) {
+      // Fetch initial set of bikes when component loads and authentication is checked
+      fetchBikes(1, false);
+    }
+  }, [isChecking]); // Depends on isChecking to ensure auth check completes first
 
   // Effect to log changes in filteredBikes array
   useEffect(() => {
     if (filteredBikes.length > 0) {
       console.log('Filtered/Displayed Bikes Array Updated:', filteredBikes);
+      // No need to set filterMessage here, it's set by fetchBikes
     }
-  }, [filteredBikes]);
+    // else if (!isLoadingFilters && !filterMessage) { // Removed this condition to prevent overwriting messages
+    //     setFilterMessage('No bikes found for your current criteria.');
+    // }
+  }, [filteredBikes]); // Only log when bikes array changes
+
 
   useEffect(() => {
     // This ensures code runs only on the client
@@ -68,130 +112,157 @@ export default function Page() {
     }
   }, [router]);
 
+
+
+
   // Reusable function to fetch bikes from the API
   const fetchBikes = async (page, useFilters = false, currentFilters = filters) => {
     setFilterMessage('');
     setIsLoadingFilters(true);
+    setFilteredBikes([]); // Clear current bikes while loading
+
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      setFilterMessage('Authentication token missing. Please log in again.');
+      setIsLoadingFilters(false);
+      window.location.href = '/auth';
+      return;
+    }
+
     let apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/bike/resale-bikes?page=${page}&limit=10`;
-    let payload = {};
+    let requestOptions = {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    };
 
     if (useFilters) {
       apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/bike/resale-bikes/filters?page=${page}&limit=10`;
-      payload = {
+      const payload = {
         brand: currentFilters.brand || undefined,
         bike_name: currentFilters.bike_name || undefined,
-        year_of_purchase: {
-          min: currentFilters.year_of_purchase_min || undefined,
-          max: currentFilters.year_of_purchase_max || undefined,
-        },
-        cc: {
-          min: currentFilters.cc_min || undefined,
-          max: currentFilters.cc_max || undefined,
-        },
-        kms_driven: {
-          min: currentFilters.kms_driven_min || undefined,
-          max: currentFilters.kms_driven_max || undefined,
-        },
+        year_of_purchase: (currentFilters.year_of_purchase_min || currentFilters.year_of_purchase_max) ? {
+          min: currentFilters.year_of_purchase_min ? parseInt(currentFilters.year_of_purchase_min) : undefined,
+          max: currentFilters.year_of_purchase_max ? parseInt(currentFilters.year_of_purchase_max) : undefined,
+        } : undefined,
+        cc: (currentFilters.cc_min || currentFilters.cc_max) ? {
+          min: currentFilters.cc_min ? parseInt(currentFilters.cc_min) : undefined,
+          max: currentFilters.cc_max ? parseInt(currentFilters.cc_max) : undefined,
+        } : undefined,
+        kms_driven: (currentFilters.kms_driven_min || currentFilters.kms_driven_max) ? {
+          min: currentFilters.kms_driven_min ? parseInt(currentFilters.kms_driven_min) : undefined,
+          max: currentFilters.kms_driven_max ? parseInt(currentFilters.kms_driven_max) : undefined,
+        } : undefined,
         owner: currentFilters.owner || undefined,
         servicing: currentFilters.servicing || undefined,
         engine_condition: currentFilters.engine_condition || undefined,
         physical_condition: currentFilters.physical_condition || undefined,
         tyre_condition: currentFilters.tyre_condition || undefined,
-        price: {
-          min: currentFilters.price_min || undefined,
-          max: currentFilters.price_max || undefined,
+        price: (currentFilters.price_min || currentFilters.price_max) ? {
+          min: currentFilters.price_min ? parseInt(currentFilters.price_min) : undefined,
+          max: currentFilters.price_max ? parseInt(currentFilters.price_max) : undefined,
+        } : undefined,
+      };
+
+      Object.keys(payload).forEach(key => {
+        if (payload[key] === undefined || (typeof payload[key] === 'object' && payload[key] && Object.values(payload[key]).every(v => v === undefined))) {
+          delete payload[key];
+        }
+      });
+      // console.log(payload);
+
+      requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
         },
+        body: JSON.stringify(payload),
       };
     }
 
     try {
-      const response = await fetch(apiUrl, {
-        method: useFilters ? 'POST' : 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: useFilters ? JSON.stringify(payload) : null,
-      });
+      const response = await fetch(apiUrl, requestOptions);
 
       if (!response.ok) {
-        // If the response is not ok, throw an error to be caught by the catch block.
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch bikes');
       }
 
       const data = await response.json();
       setFilteredBikes(data.bikes || []);
       setTotalPages(data.totalPages || 1);
-      setCurrentPage(data.currentPage || 1);
+      setCurrentPage(data.page || 1);
 
-      if (useFilters) {
-        if (data.totalBikes > 0) {
-          setFilterMessage(`Found ${data.totalBikes} bikes.`);
-          setShowFilters(false); // Hide filters on successful search
-        } else {
-          setFilterMessage('No bikes found matching your criteria.');
-          setShowFilters(true); // Open filters when no bikes are found
-        }
+      if (data.bikes && data.bikes.length === 0) {
+        setFilterMessage('No bikes found matching your criteria.');
+      } else {
+        setFilterMessage(`Found ${data.bikes.length} bikes.`);
       }
 
     } catch (error) {
-      console.error("Failed to fetch bikes:", error);
-      if (useFilters) {
-        // If any error occurs during filtering, just show the 'no bikes found' message.
-        setFilteredBikes([]);
-        setTotalPages(0);
-        setCurrentPage(1);
-        setShowFilters(true); // Open filters on error during filtering
-      } else {
-        // Only show a hard error on initial load.
-        setFilterMessage('Failed to load bikes. Please try again.');
-        setFilteredBikes([]);
-      }
+      console.error('Error fetching bikes:', error);
+      setFilterMessage(`Error: ${error.message}. Please try again.`);
+      setFilteredBikes([]); // Ensure bikes are cleared on error
+      setTotalPages(1);
     } finally {
       setIsLoadingFilters(false);
     }
   };
 
+
+  // Handler for filter form input changes
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
   // Handler for filter form submission
   const handleFilterSubmit = async (e) => {
     e.preventDefault();
-
-    // Check if any filter has a meaningful value
-    const isAnyFilterSet = Object.values(filters).some(value => value && value.toString().trim() !== '');
-
-    if (isAnyFilterSet) {
-      // If filters are set, apply them
-      setCurrentPage(1);
-      setIsFilteredMode(true);
-      fetchBikes(1, true, filters);
-    } else {
-      // If no filters are set, treat as a clear filter action
-      handleClearFilters();
-    }
-
+    setIsFilteredMode(true); // Set filter mode to true
+    setCurrentPage(1); // Reset to first page for new filter search
+    await fetchBikes(1, true, filters);
   };
 
   // Handler to clear filters
-  const handleClearFilters = () => {
+  const handleClearFilters = async () => {
     setFilters({
       brand: '', bike_name: '', year_of_purchase_min: '', year_of_purchase_max: '',
-      cc_min: '', cc_max: '', kms_driven_min: '', kms_driven_max: '', owner: '',
-      servicing: '', engine_condition: '', physical_condition: '', tyre_condition: '',
-      price_min: '', price_max: '',
+      cc_min: '', cc_max: '', kms_driven_min: '', kms_driven_max: '',
+      owner: '', servicing: '', engine_condition: '', physical_condition: '',
+      tyre_condition: '', price_min: '', price_max: '',
     });
-    setCurrentPage(1);
-    setIsFilteredMode(false);
-    setFilterMessage('');
-    fetchBikes(1, false);
+    setIsFilteredMode(false); // Back to general listings mode
+    setCurrentPage(1); // Reset to first page
+    await fetchBikes(1, false); // Fetch initial bikes
   };
 
   // Handler for pagination page change
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-      fetchBikes(newPage, isFilteredMode, filters);
+  const handlePageChange = async (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return; // Prevent invalid page navigation
+    setCurrentPage(newPage);
+    if (isFilteredMode) {
+      await fetchBikes(newPage, true, filters); // Re-fetch with current filters
+    } else {
+      await fetchBikes(newPage, false); // Re-fetch general listings
     }
   };
+
+  if (isChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700">
+        <div className="flex items-center space-x-2">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+          <p className="text-lg">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="container mx-auto px-4 py-2">

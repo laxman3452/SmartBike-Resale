@@ -4,39 +4,35 @@ import CustomSelect from '@/components/CustomSelect';
 
 const FilterSection = ({ filters, setFilters, applyFilters, clearFilters }) => {
   const ownerOptions = [
-    { value: 'First', label: 'First' },
-    { value: 'Second', label: 'Second' },
-    { value: 'Third', label: 'Third' },
-    { value: 'Fourth & Above', label: 'Fourth & Above' },
+    { value: 'First Owner', label: 'First Owner' },
+    { value: 'Second Owner', label: 'Second Owner' },
+    { value: 'Third Owner', label: 'Third Owner' },
+    { value: 'Fourth Owner Or More', label: 'Fourth Owner Or More' },
   ];
 
   const servicingOptions = [
     { value: 'regular', label: 'Regular' },
     { value: 'irregular', label: 'Irregular' },
-    { value: 'not serviced', label: 'Not Serviced' },
   ];
 
   const engineConditionOptions = [
-    { value: 'excellent', label: 'Excellent' },
-    { value: 'good', label: 'Good' },
-    { value: 'fair', label: 'Fair' },
-    { value: 'poor', label: 'Poor' },
+    { value: 'open', label: 'Opened engine' },
+    { value: 'seal', label: 'Seal engine' },
   ];
 
   const physicalConditionOptions = [
-    { value: 'fresh', label: 'Fresh' },
-    { value: 'scratches', label: 'Scratches' },
-    { value: 'dented', label: 'Dented' },
-    { value: 'repainted', label: 'Repainted' },
-    { value: 'damaged', label: 'Damaged' },
+    { value: 'fresh', label: 'Fresh – Looks almost unused, no visible damage' },
+    { value: 'like new', label: 'Like New – Minimal use, very minor signs of wear' },
+    { value: 'old', label: 'Old – Noticeable wear, minor scratches or faded paint' },
+    { value: 'very old', label: 'Very Old – Heavy usage signs, visible damage or rust' },
   ];
 
   const tyreConditionOptions = [
-    { value: 'new', label: 'New' },
-    { value: 'good', label: 'Good' },
-    { value: 'average', label: 'Average' },
-    { value: 'worn out', label: 'Worn Out' },
+    { value: 'new', label: 'New – Recently replaced, full tread, no signs of wear' },
+    { value: 'good', label: 'Good – Moderate usage, safe tread depth remaining' },
+    { value: 'worn', label: 'Worn – Low tread, cracks or signs of replacement needed' },
   ];
+
 
   const handleSelectChange = (name, value) => {
     setFilters(prev => ({ ...prev, [name]: value }));
@@ -46,12 +42,12 @@ const FilterSection = ({ filters, setFilters, applyFilters, clearFilters }) => {
     <div className="bg-gray-50 p-6 rounded-xl shadow-lg border border-gray-200">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Filters</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
+
         {/* Brand */}
         <div className="w-full">
           <BrandInput bikeData={filters} setBikeData={setFilters} />
         </div>
-        
+
         {/* Bike Name */}
         <div className="w-full">
           <BikeNameInput bikeData={filters} setBikeData={setFilters} />
@@ -71,68 +67,68 @@ const FilterSection = ({ filters, setFilters, applyFilters, clearFilters }) => {
 
         {/* CC */}
         <div className="grid grid-cols-2 gap-4">
-            <div>
-                <label htmlFor="cc_min" className="block mb-2 text-sm font-medium text-gray-700">Min CC</label>
-                <input type="number" id="cc_min" name="cc_min" value={filters.cc_min} onChange={(e) => setFilters(prev => ({ ...prev, cc_min: e.target.value }))} placeholder="e.g., 150" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
-            </div>
-            <div>
-                <label htmlFor="cc_max" className="block mb-2 text-sm font-medium text-gray-700">Max CC</label>
-                <input type="number" id="cc_max" name="cc_max" value={filters.cc_max} onChange={(e) => setFilters(prev => ({ ...prev, cc_max: e.target.value }))} placeholder="e.g., 350" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
-            </div>
+          <div>
+            <label htmlFor="cc_min" className="block mb-2 text-sm font-medium text-gray-700">Min CC</label>
+            <input type="number" id="cc_min" name="cc_min" value={filters.cc_min} onChange={(e) => setFilters(prev => ({ ...prev, cc_min: e.target.value }))} placeholder="e.g., 150" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label htmlFor="cc_max" className="block mb-2 text-sm font-medium text-gray-700">Max CC</label>
+            <input type="number" id="cc_max" name="cc_max" value={filters.cc_max} onChange={(e) => setFilters(prev => ({ ...prev, cc_max: e.target.value }))} placeholder="e.g., 350" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
         </div>
 
         {/* KMS Driven */}
         <div className="grid grid-cols-2 gap-4">
-            <div>
-                <label htmlFor="kms_driven_min" className="block mb-2 text-sm font-medium text-gray-700">Min Kms</label>
-                <input type="number" id="kms_driven_min" name="kms_driven_min" value={filters.kms_driven_min} onChange={(e) => setFilters(prev => ({ ...prev, kms_driven_min: e.target.value }))} placeholder="e.g., 1000" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
-            </div>
-            <div>
-                <label htmlFor="kms_driven_max" className="block mb-2 text-sm font-medium text-gray-700">Max Kms</label>
-                <input type="number" id="kms_driven_max" name="kms_driven_max" value={filters.kms_driven_max} onChange={(e) => setFilters(prev => ({ ...prev, kms_driven_max: e.target.value }))} placeholder="e.g., 30000" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
-            </div>
+          <div>
+            <label htmlFor="kms_driven_min" className="block mb-2 text-sm font-medium text-gray-700">Min Kms</label>
+            <input type="number" id="kms_driven_min" name="kms_driven_min" value={filters.kms_driven_min} onChange={(e) => setFilters(prev => ({ ...prev, kms_driven_min: e.target.value }))} placeholder="e.g., 1000" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label htmlFor="kms_driven_max" className="block mb-2 text-sm font-medium text-gray-700">Max Kms</label>
+            <input type="number" id="kms_driven_max" name="kms_driven_max" value={filters.kms_driven_max} onChange={(e) => setFilters(prev => ({ ...prev, kms_driven_max: e.target.value }))} placeholder="e.g., 30000" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
         </div>
 
         {/* Price */}
         <div className="grid grid-cols-2 gap-4">
-            <div>
-                <label htmlFor="price_min" className="block mb-2 text-sm font-medium text-gray-700">Min Price</label>
-                <input type="number" id="price_min" name="price_min" value={filters.price_min} onChange={(e) => setFilters(prev => ({ ...prev, price_min: e.target.value }))} placeholder="e.g., 100k" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
-            </div>
-            <div>
-                <label htmlFor="price_max" className="block mb-2 text-sm font-medium text-gray-700">Max Price</label>
-                <input type="number" id="price_max" name="price_max" value={filters.price_max} onChange={(e) => setFilters(prev => ({ ...prev, price_max: e.target.value }))} placeholder="e.g., 400k" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
-            </div>
+          <div>
+            <label htmlFor="price_min" className="block mb-2 text-sm font-medium text-gray-700">Min Price</label>
+            <input type="number" id="price_min" name="price_min" value={filters.price_min} onChange={(e) => setFilters(prev => ({ ...prev, price_min: e.target.value }))} placeholder="e.g., 100k" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label htmlFor="price_max" className="block mb-2 text-sm font-medium text-gray-700">Max Price</label>
+            <input type="number" id="price_max" name="price_max" value={filters.price_max} onChange={(e) => setFilters(prev => ({ ...prev, price_max: e.target.value }))} placeholder="e.g., 400k" className="w-full p-2.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
         </div>
 
         {/* Owner */}
         <div>
-            <label htmlFor="owner" className="block mb-2 text-sm font-medium text-gray-700">Owner</label>
-            <CustomSelect options={ownerOptions} value={filters.owner} onChange={(value) => handleSelectChange('owner', value)} placeholder="Select Owner" />
+          <label htmlFor="owner" className="block mb-2 text-sm font-medium text-gray-700">Owner</label>
+          <CustomSelect options={ownerOptions} value={filters.owner} onChange={(value) => handleSelectChange('owner', value)} placeholder="Select Owner" />
         </div>
 
         {/* Servicing */}
         <div>
-            <label htmlFor="servicing" className="block mb-2 text-sm font-medium text-gray-700">Servicing</label>
-            <CustomSelect options={servicingOptions} value={filters.servicing} onChange={(value) => handleSelectChange('servicing', value)} placeholder="Select Servicing" />
+          <label htmlFor="servicing" className="block mb-2 text-sm font-medium text-gray-700">Servicing</label>
+          <CustomSelect options={servicingOptions} value={filters.servicing} onChange={(value) => handleSelectChange('servicing', value)} placeholder="Select Servicing" />
         </div>
 
         {/* Engine Condition */}
         <div>
-            <label htmlFor="engine_condition" className="block mb-2 text-sm font-medium text-gray-700">Engine Condition</label>
-            <CustomSelect options={engineConditionOptions} value={filters.engine_condition} onChange={(value) => handleSelectChange('engine_condition', value)} placeholder="Select Condition" />
+          <label htmlFor="engine_condition" className="block mb-2 text-sm font-medium text-gray-700">Engine Condition</label>
+          <CustomSelect options={engineConditionOptions} value={filters.engine_condition} onChange={(value) => handleSelectChange('engine_condition', value)} placeholder="Select Condition" />
         </div>
 
         {/* Physical Condition */}
         <div>
-            <label htmlFor="physical_condition" className="block mb-2 text-sm font-medium text-gray-700">Physical Condition</label>
-            <CustomSelect options={physicalConditionOptions} value={filters.physical_condition} onChange={(value) => handleSelectChange('physical_condition', value)} placeholder="Select Condition" />
+          <label htmlFor="physical_condition" className="block mb-2 text-sm font-medium text-gray-700">Physical Condition</label>
+          <CustomSelect options={physicalConditionOptions} value={filters.physical_condition} onChange={(value) => handleSelectChange('physical_condition', value)} placeholder="Select Condition" />
         </div>
 
         {/* Tyre Condition */}
         <div>
-            <label htmlFor="tyre_condition" className="block mb-2 text-sm font-medium text-gray-700">Tyre Condition</label>
-            <CustomSelect options={tyreConditionOptions} value={filters.tyre_condition} onChange={(value) => handleSelectChange('tyre_condition', value)} placeholder="Select Condition" />
+          <label htmlFor="tyre_condition" className="block mb-2 text-sm font-medium text-gray-700">Tyre Condition</label>
+          <CustomSelect options={tyreConditionOptions} value={filters.tyre_condition} onChange={(value) => handleSelectChange('tyre_condition', value)} placeholder="Select Condition" />
         </div>
 
       </div>

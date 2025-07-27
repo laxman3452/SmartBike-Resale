@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
-const {uploadBike} = require('../middlewares/upload');
+const { uploadBike } = require('../middlewares/upload');
 const { listBike } = require('../controllers/bikeController');
 const { updateBike } = require('../controllers/bikeController');
 const { showMyListings } = require('../controllers/bikeController');

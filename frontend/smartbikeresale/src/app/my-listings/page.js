@@ -55,7 +55,7 @@ export default function Page() {
   }, [isChecking]);
 
   const handleEdit = (bikeId) => {
-    router.push(`/my-listings/edit?id=${bikeId}`);
+    router.push(`/my-listings/edit/${bikeId}`);
   };
 
   const handleDelete = (bikeId) => {
@@ -75,11 +75,13 @@ export default function Page() {
       if (result.isConfirmed) {
         const token = localStorage.getItem('accessToken');
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/bike/delete-bike/${bikeId}`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/bike/bike-delete`, {
             method: 'DELETE',
             headers: {
               'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ bikeId }),
           });
 
           if (response.ok) {

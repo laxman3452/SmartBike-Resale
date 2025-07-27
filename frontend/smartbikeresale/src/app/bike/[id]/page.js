@@ -12,6 +12,8 @@ export default function Page() {
   const [message, setMessage] = useState('');
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState(null); // 'success', 'error', or a message string
+  const [selectedBikeImage, setSelectedBikeImage] = useState(null);
+  const [selectedBillBookImage, setSelectedBillBookImage] = useState(null);
 
   useEffect(() => {
     if (!id) return;
@@ -27,6 +29,12 @@ export default function Page() {
         const data = await response.json();
         console.log('Fetched bike details:', data.bike);
         setBikeDetails(data.bike);
+        if (data.bike.bikeImage && data.bike.bikeImage.length > 0) {
+          setSelectedBikeImage(data.bike.bikeImage[0]);
+        }
+        if (data.bike.billBookImage && data.bike.billBookImage.length > 0) {
+          setSelectedBillBookImage(data.bike.billBookImage[0]);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -128,28 +136,60 @@ export default function Page() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Left Column: Images */}
           <div className="lg:col-span-3 lg:sticky top-24 h-fit">
+            {/* Bike Image Gallery */}
             <div className="bg-white rounded-2xl shadow-xl p-4">
-              {bikeDetails.bikeImage && bikeDetails.bikeImage.length > 0 ? (
+              {selectedBikeImage ? (
                 <img
-                  src={bikeDetails.bikeImage[0]}
+                  src={selectedBikeImage}
                   alt={bikeDetails.bike_name}
-                  className="w-full h-auto object-cover rounded-xl"
+                  className="w-full h-auto object-cover rounded-xl mb-4"
+                  style={{ maxHeight: '500px' }}
                 />
               ) : (
-                <div className="w-full h-96 bg-gray-200 flex items-center justify-center text-gray-500 rounded-xl">
+                <div className="w-full h-96 bg-gray-200 flex items-center justify-center text-gray-500 rounded-xl mb-4">
                   No Image Available
                 </div>
               )}
+              <div className="flex space-x-2 overflow-x-auto">
+                {bikeDetails.bikeImage?.map((src, index) => (
+                  <img
+                    key={index}
+                    src={src}
+                    alt={`${bikeDetails.bike_name} thumbnail ${index + 1}`}
+                    className={`w-24 h-24 object-cover rounded-lg cursor-pointer border-2 ${selectedBikeImage === src ? 'border-blue-500' : 'border-transparent'}`}
+                    onClick={() => setSelectedBikeImage(src)}
+                  />
+                ))}
+              </div>
             </div>
 
+            {/* Bill Book Image Gallery */}
             {bikeDetails.billBookImage && bikeDetails.billBookImage.length > 0 && (
               <div className="mt-8 bg-white rounded-2xl shadow-xl p-4">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Bill Book Image</h3>
-                <img
-                  src={bikeDetails.billBookImage[0]}
-                  alt="Bill Book"
-                  className="w-full h-auto object-cover rounded-xl"
-                />
+                <h3 className="text-xl font-bold text-gray-800 mb-4">Bill Book Images</h3>
+                {selectedBillBookImage ? (
+                  <img
+                    src={selectedBillBookImage}
+                    alt="Bill Book"
+                    className="w-full h-auto object-cover rounded-xl mb-4"
+                    style={{ maxHeight: '500px' }}
+                  />
+                ) : (
+                  <div className="w-full h-96 bg-gray-200 flex items-center justify-center text-gray-500 rounded-xl mb-4">
+                    No Image Available
+                  </div>
+                )}
+                <div className="flex space-x-2 overflow-x-auto">
+                  {bikeDetails.billBookImage.map((src, index) => (
+                    <img
+                      key={index}
+                      src={src}
+                      alt={`Bill Book thumbnail ${index + 1}`}
+                      className={`w-24 h-24 object-cover rounded-lg cursor-pointer border-2 ${selectedBillBookImage === src ? 'border-blue-500' : 'border-transparent'}`}
+                      onClick={() => setSelectedBillBookImage(src)}
+                    />
+                  ))}
+                </div>
               </div>
             )}
 
