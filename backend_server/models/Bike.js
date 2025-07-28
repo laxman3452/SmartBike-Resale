@@ -15,6 +15,7 @@ const bikeSchema = new mongoose.Schema({
   tyre_condition: String,
   price: Number,
   description:String,
+  district:String,
   listedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
