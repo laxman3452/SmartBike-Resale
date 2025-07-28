@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 
 import BrandInput from '@/components/BrandInput';
-
-import BikeNameInput from '@/components/BikeNameImput';
+import CustomSelect from '@/components/CustomSelect';
+import BikeNameInput from '@/components/BikeNameInput';
 
 // A simple Modal component for user feedback (instead of alert/confirm)
 const Modal = ({ message, onClose }) => {
@@ -35,7 +35,7 @@ export default function Page() {
 
 
 
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [isChecking, setIsChecking] = useState(true);
   const [loading, setLoading] = useState(true); // Loading state for initial data fetch
   const [updating, setUpdating] = useState(false); // Loading state for form submission
@@ -207,7 +207,7 @@ export default function Page() {
   };
 
 
-   // Handle form submission
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdating(true);
@@ -311,63 +311,24 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-gray-100 font-inter">
-      <header className="bg-white shadow-md p-4 flex justify-between items-center px-6">
-        {/* Logo */}
-        <div className="flex items-center">
-          <a href="/" className="text-sm md:text-2xl font-bold text-gray-800 tracking-tight ml-[-1rem]">
-            smartBike-Resale
-          </a>
-        </div>
 
-        {/* Right-hand side: My Listings and Profile */}
-        <nav className="flex items-center space-x-2 md:space-x-6 w-[185px] md:w-[22rem] mr-[-1rem]">
-          <a href="/price-prediction" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 w-full text-[10px] md:text-xl">
-            predict & list
-          </a>
-
-
-          <a href="/my-listings" className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-200 text-sm w-full text-[10px] md:text-xl">
-            My Listings
-          </a>
-
-          {/* Profile Circle Div */}
-          <a href="/profile" className="block relative">
-            <div className="w-10 h-10 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 font-bold text-lg overflow-hidden border-2 border-purple-400 shadow-sm">
-              {avatarSrc ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={avatarSrc}
-                  alt="User Avatar"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = `https://placehold.co/40x40/a78bfa/ffffff?text=${userInitials}`;
-                  }}
-                />
-              ) : (
-                <span className="text-purple-800">{userInitials}</span>
-              )}
-            </div>
-          </a>
-        </nav>
-      </header>
 
       <main className="container mx-auto p-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Edit Bike Listing</h1>
 
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto space-y-6">
           {/* General Bike Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="relative">
-      
-            <BrandInput bikeData={bikeData} setBikeData={setBikeData} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="relative">
 
-            
-           
-          </div>
+              <BrandInput bikeData={bikeData} setBikeData={setBikeData} />
+
+
+
+            </div>
             <div>
-             
-            <BikeNameInput bikeData={bikeData} setBikeData={setBikeData} />
+
+              <BikeNameInput bikeData={bikeData} setBikeData={setBikeData} />
             </div>
             <div>
               <label htmlFor="year_of_purchase" className="block text-sm font-medium text-gray-700 mb-1">Year of Purchase</label>
@@ -407,20 +368,17 @@ export default function Page() {
             </div>
             <div>
               <label htmlFor="owner" className="block text-sm font-medium text-gray-700 mb-1">Owner</label>
-              <select
-                id="owner"
-                name="owner"
+              <CustomSelect
+                options={[
+                  { value: 'First Owner', label: 'First Owner' },
+                  { value: 'Second Owner', label: 'Second Owner' },
+                  { value: 'Third Owner', label: 'Third Owner' },
+                  { value: 'Third Owner Or More', label: 'Third Owner Or More' },
+                ]}
                 value={bikeData.owner}
-                onChange={handleChange}
-                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-500"
-                required
-              >
-                <option value="">Select owner type</option>
-                <option value="First Owner">First Owner</option>
-                <option value="Second Owner">Second Owner</option>
-                <option value="Third Owner">Third Owner</option>
-                <option value="Third Owner Or More">Third Owner Or More</option>
-              </select>
+                onChange={value => setBikeData(prev => ({ ...prev, owner: value }))}
+                placeholder="Select owner type"
+              />
             </div>
           </div>
 
@@ -428,62 +386,54 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="servicing" className="block text-sm font-medium text-gray-700 mb-1">Servicing</label>
-              <select
-                id="servicing"
-                name="servicing"
+              <CustomSelect
+                options={[
+                  { value: 'regular', label: 'Regular' },
+                  { value: 'irregular', label: 'Irregular' },
+                ]}
                 value={bikeData.servicing}
-                onChange={handleChange}
-                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-500"
-                required
-              >
-                <option value="regular">regular</option>
-                <option value="irregular">irregular</option>
-              </select>
+                onChange={value => setBikeData(prev => ({ ...prev, servicing: value }))}
+                placeholder="Select servicing type"
+              />
             </div>
             <div>
               <label htmlFor="engine_condition" className="block text-sm font-medium text-gray-700 mb-1">Engine Condition</label>
-              <select
-                id="engine_condition"
-                name="engine_condition"
+              <CustomSelect
+                options={[
+                  { value: 'open', label: 'Opened' },
+                  { value: 'seal', label: 'Seal' },
+                ]}
                 value={bikeData.engine_condition}
-                onChange={handleChange}
-                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-500"
-                required
-              >
-                <option value="open">open</option>
-                <option value="seal">seal</option>
-              </select>
+                onChange={value => setBikeData(prev => ({ ...prev, engine_condition: value }))}
+                placeholder="Select engine condition"
+              />
             </div>
             <div>
               <label htmlFor="physical_condition" className="block text-sm font-medium text-gray-700 mb-1">Physical Condition</label>
-              <select
-                id="physical_condition"
-                name="physical_condition"
+              <CustomSelect
+                options={[
+                  { value: 'fresh', label: 'Fresh – Looks almost unused, no visible damage' },
+                  { value: 'like new', label: 'Like New – Minimal use, very minor signs of wear' },
+                  { value: 'old', label: 'Old – Noticeable wear, minor scratches or faded paint' },
+                  { value: 'very old', label: 'Very Old – Heavy usage signs, visible damage or rust' },
+                ]}
                 value={bikeData.physical_condition}
-                onChange={handleChange}
-                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-500"
-                required
-              >
-                <option value="fresh">fresh</option>
-                <option value="like new">like new</option>
-                <option value="old">old</option>
-                <option value="very old">very old</option>
-              </select>
+                onChange={value => setBikeData(prev => ({ ...prev, physical_condition: value }))}
+                placeholder="Select physical condition"
+              />
             </div>
             <div>
               <label htmlFor="tyre_condition" className="block text-sm font-medium text-gray-700 mb-1">Tyre Condition</label>
-              <select
-                id="tyre_condition"
-                name="tyre_condition"
+              <CustomSelect
+                options={[
+                  { value: 'new', label: 'New – Recently replaced, full tread, no signs of wear' },
+                  { value: 'good', label: 'Good – Moderate usage, safe tread depth remaining' },
+                  { value: 'worn', label: 'Worn – Low tread, cracks or signs of replacement needed' },
+                ]}
                 value={bikeData.tyre_condition}
-                onChange={handleChange}
-                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm text-gray-500"
-                required
-              >
-                <option value="good">good</option>
-                <option value="new">new</option>
-                <option value="worn">worn</option>
-              </select>
+                onChange={value => setBikeData(prev => ({ ...prev, tyre_condition: value }))}
+                placeholder="Select tyre condition"
+              />
             </div>
           </div>
 
@@ -501,7 +451,7 @@ export default function Page() {
             />
           </div>
 
-                    {/* description */}
+          {/* description */}
           <div>
             <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <input
@@ -606,9 +556,8 @@ export default function Page() {
           <div className="flex justify-center">
             <button
               type="submit"
-              className={`w-full md:w-auto px-8 py-3 rounded-md font-semibold text-white transition-colors duration-200 ${
-                updating ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'
-              }`}
+              className={`w-full md:w-auto px-8 py-3 rounded-md font-semibold text-white transition-colors duration-200 ${updating ? 'bg-gray-400 cursor-not-allowed' : 'bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2'
+                }`}
               disabled={updating}
             >
               {updating ? 'Updating...' : 'Update Listing'}
