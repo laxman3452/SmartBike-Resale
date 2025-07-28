@@ -420,19 +420,19 @@ const PricePrediction = () => {
             {/* Year of Purchase */}
             <div>
               <label htmlFor="year_of_purchase" className="block text-sm font-medium text-gray-700 mb-1">Year of Purchase</label>
-              <input type="number" name="year_of_purchase" id="year_of_purchase" value={formData.year_of_purchase} onChange={handleChange} placeholder="e.g., 2020" className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-200 text-gray-500" />
+              <input type="number" name="year_of_purchase" id="year_of_purchase" value={formData.year_of_purchase} onChange={handleChange} placeholder="e.g., 2020" className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-300 text-gray-500" />
             </div>
 
             {/* CC */}
             <div>
               <label htmlFor="cc" className="block text-sm font-medium text-gray-700 mb-1">Engine CC</label>
-              <input type="number" name="cc" id="cc" value={formData.cc} onChange={handleChange} placeholder="e.g., 250" className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-200 text-gray-500" />
+              <input type="number" name="cc" id="cc" value={formData.cc} onChange={handleChange} placeholder="e.g., 250" className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-300 text-gray-500" />
             </div>
 
             {/* KMs Driven */}
             <div>
               <label htmlFor="kms_driven" className="block text-sm font-medium text-gray-700 mb-1">KMs Driven</label>
-              <input type="number" name="kms_driven" id="kms_driven" value={formData.kms_driven} onChange={handleChange} placeholder="e.g., 15000" className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-200 text-gray-500" />
+              <input type="number" name="kms_driven" id="kms_driven" value={formData.kms_driven} onChange={handleChange} placeholder="e.g., 15000" className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-300 text-gray-500" />
             </div>
 
             {/* Owner */}
@@ -503,7 +503,7 @@ const PricePrediction = () => {
             {/* Description */}
             <div className="md:col-span-2">
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea name="description" id="description" value={formData.description} onChange={handleChange} rows="4" placeholder="e.g., Well-maintained bike with regular servicing. Minor scratches on the side." className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-200 text-gray-500"></textarea>
+              <textarea name="description" id="description" value={formData.description} onChange={handleChange} rows="4" placeholder="e.g., Well-maintained bike with regular servicing. Minor scratches on the side." className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition placeholder:text-gray-300 text-gray-500"></textarea>
             </div>
           </form>
 
