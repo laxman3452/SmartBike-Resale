@@ -110,8 +110,9 @@ export default function Page() {
             <p className="text-lg mb-4">You currently have no bike listings.</p>
           </div>
         ) : (
+          <p className="text-xl mb-4 text-center">My bike listings.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <p className="text-xl mb-4">My bike listings.</p>
+            
             {bikes.map((bike) => (
               <div
                 key={bike._id}
