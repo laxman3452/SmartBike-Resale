@@ -292,7 +292,7 @@ export default function AuthPage() {
                         <input type="text" name="fullName" placeholder="Full Name" value={registerFormData.fullName} onChange={handleRegisterChange} className={inputClasses} required />
                         <input type="email" name="email" placeholder="Email Address" value={registerFormData.email} onChange={handleRegisterChange} className={inputClasses} required />
                         <input type="text" name="address" placeholder="Address" value={registerFormData.address} onChange={handleRegisterChange} className={inputClasses} required />
-                        <input type="password" name="password" placeholder="Password" value={registerFormData.password} onChange={handleRegisterChange} className={inputClasses} required />
+                        <input type="password" name="password" placeholder="Password" value={registerFormData.password} onChange={handleRegisterChange} className={inputClasses}  minLength={8} required />
                         <button type="submit" className={`${buttonClasses} bg-blue-600 hover:bg-blue-700`} disabled={isLoading}>
                             {isLoading ? 'Creating Account...' : 'Create Account'}
                         </button>
