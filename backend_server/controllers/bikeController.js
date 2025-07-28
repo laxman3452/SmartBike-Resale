@@ -34,7 +34,7 @@ exports.listBike = async (req, res) => {
       price: parseInt(req.body.price),
       description: req.body.description,
       listedBy: req.userId,
-      district: req.district
+      // district: req.district
     });
 
     // console.log("✅ Bike Object Ready:", bike);
@@ -97,7 +97,7 @@ exports.updateBike = async (req, res) => {
     const fields = [
       'brand', 'bike_name', 'year_of_purchase', 'cc', 'kms_driven',
       'owner', 'servicing', 'engine_condition', 'physical_condition',
-      'tyre_condition', 'price','description', 'district'
+      'tyre_condition', 'price','description',
     ];
 
     for (const field of fields) {
