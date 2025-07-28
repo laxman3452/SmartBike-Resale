@@ -45,8 +45,8 @@ const PricePrediction = () => {
   ];
 
   const engineConditionOptions = [
-    { value: 'open', label: 'Opened' },
-    { value: 'seal', label: 'Seal' },
+    { value: 'open', label: 'Opened engine' },
+    { value: 'seal', label: 'Seal engine' },
   ];
 
   const physicalConditionOptions = [
