@@ -111,7 +111,7 @@ export default function Page() {
           </div>
         ) : (
           <div>
-          <p className="text-xl mb-4 text-center">My bike listings.</p>
+          <p className="text-2xl mb-4 text-center font-bold text-gray-700">Your bike listings.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             
             {bikes.map((bike) => (
