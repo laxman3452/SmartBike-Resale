@@ -53,8 +53,8 @@ const Header = () => {
             <div className="relative gap-4 items-center flex" ref={dropdownRef}>
 
 
-              <Link href="/price-prediction" className="text-gray-600 hover:text-gray-900 font-medium">Predict & List</Link>
-              <Link href="/my-listings" className="text-gray-600 hover:text-gray-900 font-medium">My Listings</Link>
+              <Link href="/price-prediction" className="text-gray-600 hover:text-gray-900 font-bold">Predict & List</Link>
+              <Link href="/my-listings" className="text-gray-600 hover:text-gray-900 font-bold">My Listings</Link>
 
 
               <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center space-x-2 focus:outline-none">
